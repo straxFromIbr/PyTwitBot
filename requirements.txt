@@ -1,0 +1,5 @@
+markovify
+mecab-python3
+neologdn
+requests
+requests-oauthlib
