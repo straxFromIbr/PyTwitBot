@@ -39,8 +39,17 @@ def main():
         f.writelines(tl_text_list)
     generated_tweet = markovbot.gen_text(datapath)
     logging.info(generated_tweet)
-    twitter.tweet(generated_tweet, session)
-    print(generated_tweet)
+    ret = twitter.tweet(generated_tweet, session)
+
+    if ret:
+        return
+
+    for _ in range(3):
+        # 失敗したら何度か再試行
+        generated_tweet = markovbot.gen_text(datapath)
+        ret = twitter.tweet(generated_tweet, session)
+        if ret:
+            return
 
 
 if __name__ == "__main__":

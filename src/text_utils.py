@@ -26,5 +26,3 @@ def filter_text(tweet_text: str):
     if len(res_text) < 5:
         return None
     return "。".join(res_text.strip().split("\n"))
-
-
