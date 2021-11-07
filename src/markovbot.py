@@ -5,13 +5,19 @@ import random
 import MeCab
 import markovify
 
+import text_utils
+
 # parser = MeCab.Tagger("-d /usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd")
 
 
 def parse_text(text: str, parser) -> str:
-    parsed = parser.parse(text)
+    filterd = text_utils.filter_text(text)
+    if filterd is None:
+        filterd = text
+
+    parsed = parser.parse(filterd)
     if parsed is None:
-        return " ".join(text.split())
+        return " ".join(filterd.split())
 
     words_list = [
         morph.split("\t")[0]
