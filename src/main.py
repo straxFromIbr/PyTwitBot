@@ -24,12 +24,12 @@ def set_log():
 
 def main():
     if len(sys.argv) < 2:
-        logging.warn("no file path specified")
+        logging.warn("Requires an argument: tweets text file")
         exit(1)
 
     datapath = pathlib.Path(sys.argv[1])
     if not datapath.exists():
-        logging.warning("no tweets data fil")
+        logging.warning(f"New file {str(datapath)} was created.")
         datapath.touch()
 
     session = twitter.mk_session()
