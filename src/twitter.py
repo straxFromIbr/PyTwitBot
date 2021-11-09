@@ -48,7 +48,7 @@ def gettl(oa2_session):
         "count": 200,
         "include_rts": "false",
         "exclude_replies": "true",
-        "tweet_mode": "extendd",
+        "tweet_mode": "extended",
     }
 
     req = oa2_session.get(
