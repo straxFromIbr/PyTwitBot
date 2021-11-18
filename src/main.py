@@ -1,11 +1,10 @@
-import logging
-import sys
 import datetime
+import logging
 import pathlib
+import sys
 
-
-import twitter
 import markovbot
+import twitter
 
 
 def set_log():
