@@ -77,4 +77,4 @@ def gettl(oa2_session):
 
 if __name__ == "__main__":
     session = mk_session()
-    print(gettl(session))
+    print(*gettl(session))
