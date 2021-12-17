@@ -37,7 +37,7 @@ if __name__ == "__main__":
         generated_tweet = markovbot.gen_text(datapath)
         logging.info(generated_tweet)
         ret = twitter.tweet(generated_tweet, session)
-        exit(0) if ret else exit(1)
+        exit(0) if ret else ...
 
         for _ in range(3):
             # 失敗したら何度か再試行
