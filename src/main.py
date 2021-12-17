@@ -8,11 +8,7 @@ import twitter
 
 
 def set_log():
-
     logfile = "./logs" / pathlib.Path(str(datetime.date.today()) + ".log")
-    if not logfile.exists():
-        logfile.touch()
-
     logging.basicConfig(
         format="%(asctime)s %(levelname)s:%(message)s",
         level=logging.INFO,
@@ -21,37 +17,31 @@ def set_log():
     )
 
 
-def main():
+if __name__ == "__main__":
+    set_log()
     if len(sys.argv) < 2:
         logging.warn("Requires an argument: tweets text file")
         exit(1)
 
-    datapath = pathlib.Path(sys.argv[1])
-    if not datapath.exists():
-        logging.warning(f"New file {str(datapath)} was created.")
-        datapath.touch()
-
     session = twitter.mk_session()
-    tl_text_list = twitter.gettl(session)
+    if sys.argv[1] == "gettl":
+        tl_text_list = twitter.gettl(session)
+        print(tl_text_list)
+        exit(0)
 
-    with open(datapath, "a") as f:
-        f.writelines(tl_text_list)
-    generated_tweet = markovbot.gen_text(datapath)
-    logging.info(generated_tweet)
-    ret = twitter.tweet(generated_tweet, session)
+    if sys.argv[1] == "gentweet":
+        exit(1) if len(sys.argv) < 2 else ...
 
-    if ret:
-        return
+        datapath = pathlib.Path(sys.argv[2])
 
-    for _ in range(3):
-        # 失敗したら何度か再試行
         generated_tweet = markovbot.gen_text(datapath)
+        logging.info(generated_tweet)
         ret = twitter.tweet(generated_tweet, session)
-        if ret:
-            return
+        exit(0) if ret else exit(1)
 
-
-if __name__ == "__main__":
-
-    set_log()
-    main()
+        for _ in range(3):
+            # 失敗したら何度か再試行
+            generated_tweet = markovbot.gen_text(datapath)
+            ret = twitter.tweet(generated_tweet, session)
+            exit(0) if ret else ...
+    exit(1)

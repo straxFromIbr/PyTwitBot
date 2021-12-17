@@ -2,8 +2,9 @@
 set -euxo pipefail
 command cd "$(dirname "$0")"
 
-TW_PATH='./data/tweets.txt'
+tweets_data='./data/tweets.txt'
 TW_PATH_BP='./data/tweets.txt.backup'
+TW_SOURCE="$(mktemp)"
 
 if ! test -e './data'; then
     mkdir './data'
@@ -13,11 +14,13 @@ if ! test -e './logs'; then
     mkdir './logs'
 fi
 
-touch "${TW_PATH}"
-cp "${TW_PATH}" "${TW_PATH_BP}"
+cp "${tweets_data}" "${TW_PATH_BP}"
 
-cat "${TW_PATH_BP}" \
+python3 src/main.py gettl >> "${tweets_data}"
+cat "${tweets_data}" \
     | sort \
-    | uniq  > "${TW_PATH}"
+    | uniq \
+    | sort --random-sort \
+    | head -n500 > "${TW_SOURCE}"
 
-env python3 src/main.py "${TW_PATH}"
+python3 src/main.py gentweet "${TW_SOURCE}"
